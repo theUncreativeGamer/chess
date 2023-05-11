@@ -133,7 +133,7 @@ int GameManager::isOver()
 			bKing = i;
 			continue;
 		}
-		vector<pos> tmp = chess[i]->collectWalk(chess, i);
+		vector<Vector2i> tmp = chess[i]->collectWalk(chess, i);
 		allChessWalk[i] = tmp;
 	}
 	//國王放到最後做
@@ -155,7 +155,7 @@ int GameManager::isOver()
 	{
 		check = 0;
 		int curKingIndex = 0;
-		pos kingPos;
+		Vector2i kingPos;
 		if (this->current_player)
 		{
 			kingPos = chess[wKing]->getPos();
@@ -253,72 +253,72 @@ void GameManager::setChess() {
 	chess.resize(32);
 
 	for (int i = 0; i < 8; i++) {	//加入白棋
-		chess[i] = new Pawn(pos{ 0,0 }, 1);
+		chess[i] = new Pawn(Vector2i{ 0,0 }, 1);
 	}
 	for (int i = 16; i < 24; i++) {	//加入黑棋
-		chess[i] = new Pawn(pos{ 0,0 }, 0);
+		chess[i] = new Pawn(Vector2i{ 0,0 }, 0);
 	}
 
 	for (int i = 0; i < 8; i++) {
 		chess[i]->setType(6);
-		chess[i]->setPos(pos{ i,6 });
+		chess[i]->setPos(Vector2i{ i,6 });
 	}
 	//chess[0]->setPos(pos{ 0,2 });	//test
 	for (int i = 16; i < 24; i++) {
 		chess[i]->setType(6);
-		chess[i]->setPos(pos{ i - 16,1 });
+		chess[i]->setPos(Vector2i{ i - 16,1 });
 	}
 	//chess[16]->setPos(pos{ 0,3 });	//test
 	//chess[18]->setPos(pos{ 2,5 });
 
 	//rook
-	chess[8] = new Rook(pos{ 0,0 }, 1);
-	chess[9] = new Rook(pos{ 0,0 }, 1);
-	chess[24] = new Rook(pos{ 0,0 }, 0);
-	chess[25] = new Rook(pos{ 0,0 }, 0);
+	chess[8] = new Rook(Vector2i{ 0,0 }, 1);
+	chess[9] = new Rook(Vector2i{ 0,0 }, 1);
+	chess[24] = new Rook(Vector2i{ 0,0 }, 0);
+	chess[25] = new Rook(Vector2i{ 0,0 }, 0);
 
-	chess[8]->setPos(pos{ 0,7 });
-	chess[9]->setPos(pos{ 7,7 });
-	chess[24]->setPos(pos{ 0,0 });
-	chess[25]->setPos(pos{ 7,0 });
+	chess[8]->setPos(Vector2i{ 0,7 });
+	chess[9]->setPos(Vector2i{ 7,7 });
+	chess[24]->setPos(Vector2i{ 0,0 });
+	chess[25]->setPos(Vector2i{ 7,0 });
 
 	//chess[24]->setPos(pos{ 1,2 });
 
 	//knight
-	chess[10] = new Knight(pos{ 0,0 }, 1);
-	chess[11] = new Knight(pos{ 0,0 }, 1);
-	chess[26] = new Knight(pos{ 0,0 }, 0);
-	chess[27] = new Knight(pos{ 0,0 }, 0);
+	chess[10] = new Knight(Vector2i{ 0,0 }, 1);
+	chess[11] = new Knight(Vector2i{ 0,0 }, 1);
+	chess[26] = new Knight(Vector2i{ 0,0 }, 0);
+	chess[27] = new Knight(Vector2i{ 0,0 }, 0);
 
-	chess[10]->setPos(pos{ 1,7 });
-	chess[11]->setPos(pos{ 6,7 });
-	chess[26]->setPos(pos{ 1,0 });
-	chess[27]->setPos(pos{ 6,0 });
+	chess[10]->setPos(Vector2i{ 1,7 });
+	chess[11]->setPos(Vector2i{ 6,7 });
+	chess[26]->setPos(Vector2i{ 1,0 });
+	chess[27]->setPos(Vector2i{ 6,0 });
 
 	//bishop
-	chess[12] = new Bishop(pos{ 0,0 }, 1);
-	chess[13] = new Bishop(pos{ 0,0 }, 1);
-	chess[28] = new Bishop(pos{ 0,0 }, 0);
-	chess[29] = new Bishop(pos{ 0,0 }, 0);
+	chess[12] = new Bishop(Vector2i{ 0,0 }, 1);
+	chess[13] = new Bishop(Vector2i{ 0,0 }, 1);
+	chess[28] = new Bishop(Vector2i{ 0,0 }, 0);
+	chess[29] = new Bishop(Vector2i{ 0,0 }, 0);
 
-	chess[12]->setPos(pos{ 2,7 });
-	chess[13]->setPos(pos{ 5,7 });
-	chess[28]->setPos(pos{ 2,0 });
-	chess[29]->setPos(pos{ 5,0 });
+	chess[12]->setPos(Vector2i{ 2,7 });
+	chess[13]->setPos(Vector2i{ 5,7 });
+	chess[28]->setPos(Vector2i{ 2,0 });
+	chess[29]->setPos(Vector2i{ 5,0 });
 
 	//queen
-	chess[14] = new Queen(pos{ 0,0 }, 1);
-	chess[30] = new Queen(pos{ 0,0 }, 0);
+	chess[14] = new Queen(Vector2i{ 0,0 }, 1);
+	chess[30] = new Queen(Vector2i{ 0,0 }, 0);
 
-	chess[14]->setPos(pos{ 3,7 });
-	chess[30]->setPos(pos{ 3,0 });
+	chess[14]->setPos(Vector2i{ 3,7 });
+	chess[30]->setPos(Vector2i{ 3,0 });
 
 	//king
-	chess[15] = new King(pos{ 0,0 }, 1);
-	chess[31] = new King(pos{ 0,0 }, 0);
+	chess[15] = new King(Vector2i{ 0,0 }, 1);
+	chess[31] = new King(Vector2i{ 0,0 }, 0);
 
-	chess[15]->setPos(pos{ 4,7 });
-	chess[31]->setPos(pos{ 4,0 });
+	chess[15]->setPos(Vector2i{ 4,7 });
+	chess[31]->setPos(Vector2i{ 4,0 });
 
 	/*chess.resize(5);
 	chess[0] = new King(pos{4,1}, 1);
@@ -328,7 +328,7 @@ void GameManager::setChess() {
 	chess[4] = new Bishop(pos{6,1},1);*/
 }
 
-int GameManager::findWhichChess(pos p) {
+int GameManager::findWhichChess(Vector2i p) {
 	for (int i = 0; i < chess.size(); i++) {
 		if (chess[i]->getFirstMove() == current_player && chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
 			return i;
@@ -337,7 +337,7 @@ int GameManager::findWhichChess(pos p) {
 	return -1;
 }
 
-int GameManager::findWhichChess(pos p, int a) {
+int GameManager::findWhichChess(Vector2i p, int a) {
 	for (int i = 0; i < chess.size(); i++) {
 		if (chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
 			return i;
@@ -346,7 +346,7 @@ int GameManager::findWhichChess(pos p, int a) {
 	return -1;
 }
 
-int GameManager::findOtherChess(pos p)
+int GameManager::findOtherChess(Vector2i p)
 {
 	for (int i = 0; i < chess.size(); i++) {
 		if (chess[i]->getFirstMove() != current_player && chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
@@ -356,14 +356,14 @@ int GameManager::findOtherChess(pos p)
 	return -1;
 }
 
-vector<pair<pos, pos>> thunder;
+vector<pair<Vector2i, Vector2i>> thunder;
 
 int GameManager::moveChess() {
-	pos from, og, eaten;
+	Vector2i from, og, eaten;
 	int target = -1, eaten_type, eat;
 	int amount_before, amount_after;
 	string option;
-	vector<pos> possible;
+	vector<Vector2i> possible;
 	possible.clear();
 	Piece* tmp;
 	bool flag = 0; //看有沒有選到下隻小兵
@@ -401,7 +401,7 @@ int GameManager::moveChess() {
 					if (from.x == thunder[i].second.x && from.y == thunder[i].second.y) //第二個為可以用吃過路兵的棋子 第一個為被吃棋子的紀錄
 					{
 						flag = 1;
-						pos EnPassant;
+						Vector2i EnPassant;
 						EnPassant.x = thunder[i].first.x;
 						EnPassant.y = thunder[i].first.y - 1;
 						possible.push_back(EnPassant);
@@ -415,7 +415,7 @@ int GameManager::moveChess() {
 					if (from.x == thunder[i].second.x && from.y == thunder[i].second.y)
 					{
 						flag = 1;
-						pos EnPassant;
+						Vector2i EnPassant;
 						EnPassant.x = thunder[i].first.x;
 						EnPassant.y = thunder[i].second.y + 1;
 						possible.push_back(EnPassant);
@@ -442,7 +442,7 @@ int GameManager::moveChess() {
 	this->viewer.showAllPath(chess, possible);
 
 	cout << "Enter which position you want to the chess to (x,y)\n";
-	pos to;
+	Vector2i to;
 	while (cin >> to.x >> to.y) {
 		eaten.x = to.x;	eaten.y = to.y;
 		amount_before = chess.size();
@@ -455,7 +455,7 @@ int GameManager::moveChess() {
 		{
 			if (abs(to.y - from.y) == 2) //如果在前進兩隔的情況 
 			{
-				pos temp = to;
+				Vector2i temp = to;
 				temp.x = temp.x + 1; //右邊
 				if (temp.x > -1 && temp.x < 8 && temp.y > -1 && temp.y < 8)
 				{
@@ -464,7 +464,7 @@ int GameManager::moveChess() {
 					{
 						if (chess[target2]->getType() == Type::pawn && chess[target]->getFirstMove() != chess[target2]->getFirstMove()) //如果右邊是小兵且兩者顏色不同
 						{
-							pair<pos, pos> En;
+							pair<Vector2i, Vector2i> En;
 							En.first = to;
 							En.second = temp;
 							thunder.push_back(En);
@@ -472,7 +472,7 @@ int GameManager::moveChess() {
 					}
 				}
 
-				pos temp2 = to;
+				Vector2i temp2 = to;
 				temp2.x = temp2.x - 1; //左邊
 				if (temp2.x > -1 && temp2.x < 8 && temp2.y > -1 && temp2.y < 8)
 				{
@@ -481,7 +481,7 @@ int GameManager::moveChess() {
 					{
 						if (chess[target3]->getType() == Type::pawn && chess[target]->getFirstMove() != chess[target3]->getFirstMove()) //如果右邊是小兵且兩者顏色不同
 						{
-							pair<pos, pos> En;
+							pair<Vector2i, Vector2i> En;
 							En.first = to;
 							En.second = temp2;
 							thunder.push_back(En);
@@ -499,7 +499,7 @@ int GameManager::moveChess() {
 					{
 						if (to.x == possible[i].x && to.y == possible[i].y) //找到吃過路兵的位置
 						{
-							pos temp;
+							Vector2i temp;
 							temp.x = possible[i].x;
 							temp.y = possible[i].y + 1;
 							int kill = findOtherChess(temp);
@@ -513,7 +513,7 @@ int GameManager::moveChess() {
 					{
 						if (to.x == possible[i].x && to.y == possible[i].y) //找到吃過路兵的位置
 						{
-							pos temp;
+							Vector2i temp;
 							temp.x = possible[i].x;
 							temp.y = possible[i].y - 1;
 							int kill = findOtherChess(temp);
@@ -594,7 +594,7 @@ void GameManager::whichNeedPromote() {
 			viewer.showPromoteBoard(chess, i);
 			int type;
 			cin >> type;
-			player[current_player]->onPromote(chess, i, type);
+			player[current_player]->onPromote(chess, i, Type(type-1));
 			return;
 		}
 	}

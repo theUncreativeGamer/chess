@@ -10,7 +10,7 @@ public:
 	//顯示棋盤 
 	void showBoard(const vector<Piece*>& chess, int current_player);
 	//顯示所有可能路徑
-	void showAllPath(vector<Piece*> chess, const vector<pos>& posssible);
+	void showAllPath(vector<Piece*> chess, const vector<Vector2i>& posssible);
 	//Promote時顯示的畫面
 	void showPromoteBoard(const vector<Piece*>& chess, int target);
 	//顯示動畫

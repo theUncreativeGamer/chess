@@ -6,7 +6,7 @@ using namespace std;
 int showRecord(vector<GameManager> record, vector<string> file_name);
 int battleMenu();
 int main() {
-	pos from, to;
+	Vector2i from, to;
 	GameManager gm;
 	int option, file_number, current_game, choice;
 	vector<GameManager> record;

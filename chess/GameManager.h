@@ -17,16 +17,16 @@ public:
 	//void update();	//更新棋盤
 	//void setBoard();	//建立棋盤
 	int isOver();	//檢查遊戲是否結束 //3 白被將軍 2黑被將軍 1和局 0未結束
-	void setChess();	//將旗子位置初始化
-	int findWhichChess(pos p);	//找輸入位置的旗子是哪個
-	int findWhichChess(pos p, int a);
-	int moveChess();	//動旗子
-	void whichNeedPromote();	//找有沒有旗子需要promote
+	void setChess();	//將棋子位置初始化
+	int findWhichChess(Vector2i p);	//找輸入位置的棋子是哪個
+	int findWhichChess(Vector2i p, int a);
+	int moveChess();	//動棋子
+	void whichNeedPromote();	//找有沒有棋子需要promote
 	bool isNumber(string input);
 	int getCurrent_player() { return current_player; }
 	int  getCheck() { return check; }
 	void setCheck(int _check) { check = _check; }
-	int findOtherChess(pos p);
+	int findOtherChess(Vector2i p);
 	void setCurrent_player(int current_player) { this->current_player = current_player; }
 
 
@@ -36,5 +36,5 @@ private:
 	Viewer viewer;
 	vector<Piece*> chess;
 	int check = 0;	//1 白被將軍 -1黑被將軍
-	vector<vector<pos>>allChessWalk;
+	vector<vector<Vector2i>> allChessWalk;
 };

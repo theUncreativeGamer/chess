@@ -1,13 +1,9 @@
 #pragma once
 #include<iostream>
 #include<vector>
+#include "Vector2i.h"
 
 using namespace std;
-
-struct pos {
-	int x;
-	int y;
-};
 
 enum Type {
 	none = 0,
@@ -23,28 +19,28 @@ class Piece
 {
 public:
 	Piece() { type = Type::none; position = { -1,-1 }; firstMove = false; }
-	Piece(pos _pos, bool _firstmove) { position = _pos; firstMove = _firstmove; }
+	Piece(Vector2i _pos, bool _firstmove) { position = _pos; firstMove = _firstmove; }
 
 	//set
 	void setType(int _type) { type = _type; }
-	void setPos(pos _pos) { position = _pos; }
+	void setPos(Vector2i _pos) { position = _pos; }
 	void setFirstMove(bool _firstMove) { firstMove = _firstMove; }
 
 	//get
 	int getType() { return type; }
-	pos getPos() { return position; }
+	Vector2i getPos() { return position; }
 	bool getFirstMove() { return firstMove; }
 
 	/**********************************************************************************/
 	//收集棋盤上某隻棋 所有可位移的position   index表示為哪一個旗子
-	virtual vector<pos> collectWalk(vector<Piece*> allChess, int index) { vector<pos>a; return a; }
+	virtual vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) { vector<Vector2i>a; return a; }
 
 	//判斷是否為邊界或上面有旗子  無棋2 有棋為己方棋0 有棋為敵方棋1
-	int posCouldWalk(vector<Piece*>allChess, pos checkPos, bool firstmove)
+	int posCouldWalk(vector<Piece*>allChess, Vector2i checkPos, bool firstmove)
 	{
 		for (auto it : allChess)
 		{
-			pos tmp = it->getPos();
+			Vector2i tmp = it->getPos();
 			//此位置有棋子
 			if (tmp.x == checkPos.x && tmp.y == checkPos.y)
 			{
@@ -67,7 +63,7 @@ public:
 	//~Piece();
 private:
 	int type = Type::none;
-	pos position;
+	Vector2i position;
 	bool firstMove;
 };
 
@@ -77,18 +73,18 @@ public:
 	Bishop() : Piece()
 	{
 	}
-	Bishop(pos _pos, bool _firstmove) : Piece(_pos, _firstmove)
+	Bishop(Vector2i _pos, bool _firstmove) : Piece(_pos, _firstmove)
 	{
 		this->setType(Type::bishop);
 	}
-	vector<pos> collectWalk(vector<Piece*> allChess, int index) override
+	vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) override
 	{
-		vector<pos>validPos;
-		pos _pos = allChess[index]->getPos();
+		vector<Vector2i>validPos;
+		Vector2i _pos = allChess[index]->getPos();
 
 		// lu ld ru rd
-		vector<pair<int, int>> dirBase;
-		pair<int, int> dir = { -1,-1 };
+		vector<Vector2i> dirBase;
+		Vector2i dir = { -1,-1 };
 		dirBase.push_back(dir);
 		dir = { -1, 1 };
 		dirBase.push_back(dir);
@@ -103,9 +99,9 @@ public:
 			bool yetDone = false;
 			for (int j = 0; j < dirBase.size(); j++)
 			{
-				pos tmp;
-				tmp.x = _pos.x + (i + 1) * dirBase[j].first;
-				tmp.y = _pos.y + (i + 1) * dirBase[j].second;
+				Vector2i tmp;
+				tmp.x = _pos.x + (i + 1) * dirBase[j].x;
+				tmp.y = _pos.y + (i + 1) * dirBase[j].y;
 
 				//於地圖內
 				if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
@@ -148,18 +144,18 @@ public:
 	Rook() : Piece()
 	{
 	}
-	Rook(pos _pos, bool _firstmove) : Piece(_pos, _firstmove)
+	Rook(Vector2i _pos, bool _firstmove) : Piece(_pos, _firstmove)
 	{
 		this->setType(Type::rook);
 	}
-	vector<pos> collectWalk(vector<Piece*> allChess, int index) override
+	vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) override
 	{
-		vector<pos>validPos;
-		pos _pos = allChess[index]->getPos();
+		vector<Vector2i>validPos;
+		Vector2i _pos = allChess[index]->getPos();
 
 		// l r u d
-		vector<pair<int, int>> dirBase;
-		pair<int, int> dir = { -1,0 };
+		vector<Vector2i> dirBase;
+		Vector2i dir = { -1,0 };
 		dirBase.push_back(dir);
 		dir = { 1, 0 };
 		dirBase.push_back(dir);
@@ -175,9 +171,9 @@ public:
 			bool yetDone = false;
 			for (int j = 0; j < dirBase.size(); j++)
 			{
-				pos tmp;
-				tmp.x = _pos.x + (i + 1) * dirBase[j].first;
-				tmp.y = _pos.y + (i + 1) * dirBase[j].second;
+				Vector2i tmp;
+				tmp.x = _pos.x + (i + 1) * dirBase[j].x;
+				tmp.y = _pos.y + (i + 1) * dirBase[j].y;
 
 				//於地圖內
 				if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
@@ -219,23 +215,23 @@ class Knight :public Piece
 {
 private:
 public:
-	Knight(pos _pos, bool _firstmove) : Piece(_pos, _firstmove)
+	Knight(Vector2i _pos, bool _firstmove) : Piece(_pos, _firstmove)
 	{
 		this->setType(Type::knight);
 	}
 
-	vector<pos> collectWalk(vector<Piece*> allChess, int index) override
+	vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) override
 	{
-		vector<pos> validPos;
-		pos position = this->getPos(); //目前旗子位置
+		vector<Vector2i> validPos;
+		Vector2i position = this->getPos(); //目前旗子位置
 		//八個可能的位置
-		pair<int, int> Base[8] = { {1,2 }, { 1,-2 },{-1,-2 },{-1,2},{2,1},{2,-1},{-2,1},{-2,-1} };
+		Vector2i Base[8] = { {1,2 }, { 1,-2 },{-1,-2 },{-1,2},{2,1},{2,-1},{-2,1},{-2,-1} };
 
 		for (int i = 0; i < 8; i++)
 		{
-			pos tmp;
-			tmp.x = position.x + Base[i].first;
-			tmp.y = position.y + Base[i].second;
+			Vector2i tmp;
+			tmp.x = position.x + Base[i].x;
+			tmp.y = position.y + Base[i].y;
 
 			//於地圖內
 			if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
@@ -258,18 +254,18 @@ public:
 	Queen() : Piece()
 	{
 	}
-	Queen(pos _pos, bool _firstmove) : Piece(_pos, _firstmove)
+	Queen(Vector2i _pos, bool _firstmove) : Piece(_pos, _firstmove)
 	{
 		this->setType(Type::queen);
 	}
-	vector<pos> collectWalk(vector<Piece*> allChess, int index) override
+	vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) override
 	{
-		vector<pos>validPos;
-		pos _pos = allChess[index]->getPos();
+		vector<Vector2i>validPos;
+		Vector2i _pos = allChess[index]->getPos();
 
 		//lu ld ru rd   l r u d
-		vector<pair<int, int>> dirBase;
-		pair<int, int> dir = { -1,-1 };
+		vector<Vector2i> dirBase;
+		Vector2i dir = { -1,-1 };
 		dirBase.push_back(dir);
 		dir = { -1, 1 };
 		dirBase.push_back(dir);
@@ -294,9 +290,9 @@ public:
 			bool yetDone = false;
 			for (int j = 0; j < dirBase.size(); j++)
 			{
-				pos tmp;
-				tmp.x = _pos.x + (i + 1) * dirBase[j].first;
-				tmp.y = _pos.y + (i + 1) * dirBase[j].second;
+				Vector2i tmp;
+				tmp.x = _pos.x + (i + 1) * dirBase[j].x;
+				tmp.y = _pos.y + (i + 1) * dirBase[j].y;
 
 				//於地圖內
 				if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
@@ -342,7 +338,7 @@ private:
 	pos eatPass;*/
 public:
 
-	Pawn(pos _pos, bool _firstmove) : Piece(_pos, _firstmove)
+	Pawn(Vector2i _pos, bool _firstmove) : Piece(_pos, _firstmove)
 	{
 		this->setType(Type::pawn);
 	}
@@ -362,12 +358,12 @@ public:
 	 this->eatPass = a;
 	}*/
 
-	vector<pos> collectWalk(vector<Piece*> allChess, int index) override
+	vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) override
 	{
-		vector<pos> validPos;
-		pos position = this->getPos(); //目前旗子位置
+		vector<Vector2i> validPos;
+		Vector2i position = this->getPos(); //目前旗子位置
 
-		vector<pair<int, int>> base;
+		vector<Vector2i> base;
 		base.push_back({ 1,-1 });
 		base.push_back({ -1,-1 });
 		base.push_back({ 0,-1 });
@@ -381,16 +377,16 @@ public:
 		{
 			for (auto& it : base)
 			{
-				it.second *= -1;
+				it.y *= -1;
 			}
 		}
 
-		pos checkPos;
+		Vector2i checkPos;
 		//走斜 吃棋
 		for (int i = 0; i < 2; i++)
 		{
-			checkPos.x = position.x + base[i].first;
-			checkPos.y = position.y + base[i].second;
+			checkPos.x = position.x + base[i].x;
+			checkPos.y = position.y + base[i].y;
 			//在地圖內
 			if (checkPos.x > -1 && checkPos.x < 8 && checkPos.y > -1 && checkPos.y < 8)
 			{
@@ -399,7 +395,7 @@ public:
 				//查找所有棋子
 				for (auto it : allChess)
 				{
-					pos tmp = it->getPos();
+					Vector2i tmp = it->getPos();
 					//是否此位置有棋子且為敵方棋可吃棋 代表可走
 					if (tmp.x == checkPos.x && tmp.y == checkPos.y && it->getFirstMove() != this->getFirstMove())
 					{
@@ -413,8 +409,8 @@ public:
 		bool flag = 0; //檢查前方是否有棋子阻擋
 		for (int i = 2; i < base.size(); i++)
 		{
-			checkPos.x = position.x + base[i].first;
-			checkPos.y = position.y + base[i].second;
+			checkPos.x = position.x + base[i].x;
+			checkPos.y = position.y + base[i].y;
 			//在地圖內
 			if (checkPos.x > -1 && checkPos.x < 8 && checkPos.y > -1 && checkPos.y < 8)
 			{
@@ -468,25 +464,25 @@ public:
 	King() : Piece()
 	{
 	}
-	King(pos _pos, bool _firstmove) : Piece(_pos, _firstmove)
+	King(Vector2i _pos, bool _firstmove) : Piece(_pos, _firstmove)
 	{
 		this->setType(Type::king);
 	}
 
-	vector<pos> collectWalk(vector<Piece*> allChess, int index) override
+	vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) override
 	{
-		vector<pos>validPos;
-		pos _pos = allChess[index]->getPos();
+		vector<Vector2i>validPos;
+		Vector2i _pos = allChess[index]->getPos();
 
 		//lu ld ru rd l r u d
-		pair<int, int> dirBase[8] = { {-1,-1 }, {-1, 1}, {1, -1}, {1, 1},{-1,0 }, {1, 0}, {0, -1}, {0, 1} };
+		Vector2i dirBase[8] = { {-1,-1 }, {-1, 1}, {1, -1}, {1, 1},{-1,0 }, {1, 0}, {0, -1}, {0, 1} };
 		//collect all possible walk
 
 		for (int i = 0; i < 8; i++)
 		{
-			pos tmp;
-			tmp.x = _pos.x + dirBase[i].first;
-			tmp.y = _pos.y + dirBase[i].second;
+			Vector2i tmp;
+			tmp.x = _pos.x + dirBase[i].x;
+			tmp.y = _pos.y + dirBase[i].y;
 			//於地圖內
 			if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
 			{

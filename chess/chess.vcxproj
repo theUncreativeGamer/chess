@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Vector2i.cpp" />
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +29,7 @@
     <ClInclude Include="Chess.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Vector2i.h" />
     <ClInclude Include="Viewer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

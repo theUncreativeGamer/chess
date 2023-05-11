@@ -168,7 +168,7 @@ void Viewer::showBoard(const vector<Piece*>& chess, int current_player, int chec
 	SetColor(7);
 }
 
-void Viewer::showAllPath(vector<Piece*> chess, const vector<pos>& posssible) {
+void Viewer::showAllPath(vector<Piece*> chess, const vector<Vector2i>& posssible) {
 	system("cls");
 	cout << "possible path:\n" << "投降請輸入 surrender" << endl << "跳出此局遊戲請輸入 exit" << endl << endl;
 	cout << " \\x ０１２３４５６７\n";
