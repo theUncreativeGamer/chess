@@ -24,11 +24,13 @@ public:
 	//set
 	void setType(int _type) { type = _type; }
 	void setPos(Vector2i _pos) { position = _pos; }
-	void setFirstMove(bool _firstMove) { firstMove = _firstMove; }
+	void setFirstMove(bool _firstMove) { firstMove = _firstMove; }//useless
 
 	//get
 	int getType() { return type; }
 	Vector2i getPos() { return position; }
+
+	// 不太確定這裡get的是「
 	bool getFirstMove() { return firstMove; }
 
 	/**********************************************************************************/
@@ -36,13 +38,13 @@ public:
 	virtual vector<Vector2i> collectWalk(vector<Piece*> allChess, int index) { vector<Vector2i>a; return a; }
 
 	//判斷是否為邊界或上面有旗子  無棋2 有棋為己方棋0 有棋為敵方棋1
-	int posCouldWalk(vector<Piece*>allChess, Vector2i checkPos, bool firstmove)
+	int posCouldWalk(vector<Piece*>& allChess, Vector2i checkPos, bool firstmove)
 	{
 		for (auto it : allChess)
 		{
 			Vector2i tmp = it->getPos();
 			//此位置有棋子
-			if (tmp.x == checkPos.x && tmp.y == checkPos.y)
+			if (tmp == checkPos)
 			{
 				//為己方棋
 				if (firstmove == it->getFirstMove())
@@ -83,15 +85,13 @@ public:
 		Vector2i _pos = allChess[index]->getPos();
 
 		// lu ld ru rd
-		vector<Vector2i> dirBase;
-		Vector2i dir = { -1,-1 };
-		dirBase.push_back(dir);
-		dir = { -1, 1 };
-		dirBase.push_back(dir);
-		dir = { 1, -1 };
-		dirBase.push_back(dir);
-		dir = { 1, 1 };
-		dirBase.push_back(dir);
+		vector<Vector2i> dirBase =
+		{
+			Vector2i(-1,-1),
+			Vector2i(-1, 1),
+			Vector2i( 1,-1),
+			Vector2i( 1, 1),
+		};
 
 		//collect all possible walk
 		for (int i = 0; i < 8; i++)
@@ -99,9 +99,7 @@ public:
 			bool yetDone = false;
 			for (int j = 0; j < dirBase.size(); j++)
 			{
-				Vector2i tmp;
-				tmp.x = _pos.x + (i + 1) * dirBase[j].x;
-				tmp.y = _pos.y + (i + 1) * dirBase[j].y;
+				Vector2i tmp = _pos + (i + 1) * dirBase[j];
 
 				//於地圖內
 				if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
@@ -154,15 +152,13 @@ public:
 		Vector2i _pos = allChess[index]->getPos();
 
 		// l r u d
-		vector<Vector2i> dirBase;
-		Vector2i dir = { -1,0 };
-		dirBase.push_back(dir);
-		dir = { 1, 0 };
-		dirBase.push_back(dir);
-		dir = { 0, -1 };
-		dirBase.push_back(dir);
-		dir = { 0, 1 };
-		dirBase.push_back(dir);
+		vector<Vector2i> dirBase = 
+		{
+			Vector2i(-1, 0),
+			Vector2i( 1, 0),
+			Vector2i( 0,-1),
+			Vector2i( 0, 1),
+		};
 
 
 		//collect all possible walk
@@ -225,13 +221,23 @@ public:
 		vector<Vector2i> validPos;
 		Vector2i position = this->getPos(); //目前旗子位置
 		//八個可能的位置
-		Vector2i Base[8] = { {1,2 }, { 1,-2 },{-1,-2 },{-1,2},{2,1},{2,-1},{-2,1},{-2,-1} };
+		Vector2i dirBase[8] =
+		{
+			Vector2i(-1,-2),
+			Vector2i( 1,-2),
+			Vector2i(-1, 2),
+			Vector2i( 1, 2),
+			Vector2i(-2,-1),
+			Vector2i( 2,-1),
+			Vector2i(-2, 1),
+			Vector2i( 2, 1)
+		};
 
 		for (int i = 0; i < 8; i++)
 		{
 			Vector2i tmp;
-			tmp.x = position.x + Base[i].x;
-			tmp.y = position.y + Base[i].y;
+			tmp.x = position.x + dirBase[i].x;
+			tmp.y = position.y + dirBase[i].y;
 
 			//於地圖內
 			if (tmp.x > -1 && tmp.x < 8 && tmp.y > -1 && tmp.y < 8)
@@ -264,25 +270,17 @@ public:
 		Vector2i _pos = allChess[index]->getPos();
 
 		//lu ld ru rd   l r u d
-		vector<Vector2i> dirBase;
-		Vector2i dir = { -1,-1 };
-		dirBase.push_back(dir);
-		dir = { -1, 1 };
-		dirBase.push_back(dir);
-		dir = { 1, -1 };
-		dirBase.push_back(dir);
-		dir = { 1, 1 };
-		dirBase.push_back(dir);
-
-		dir = { -1,0 };
-		dirBase.push_back(dir);
-		dir = { 1, 0 };
-		dirBase.push_back(dir);
-		dir = { 0, -1 };
-		dirBase.push_back(dir);
-		dir = { 0, 1 };
-		dirBase.push_back(dir);
-
+		vector<Vector2i> dirBase =
+		{
+			Vector2i(-1,-1),
+			Vector2i(-1, 1),
+			Vector2i( 1,-1),
+			Vector2i( 1, 1),
+			Vector2i(-1, 0),
+			Vector2i( 1, 0),
+			Vector2i( 0,-1),
+			Vector2i( 0, 1)
+		};
 
 		//collect all possible walk
 		for (int i = 0; i < 8; i++)
@@ -475,7 +473,17 @@ public:
 		Vector2i _pos = allChess[index]->getPos();
 
 		//lu ld ru rd l r u d
-		Vector2i dirBase[8] = { {-1,-1 }, {-1, 1}, {1, -1}, {1, 1},{-1,0 }, {1, 0}, {0, -1}, {0, 1} };
+		Vector2i dirBase[] =
+		{
+			Vector2i(-1,-1),
+			Vector2i(-1, 1),
+			Vector2i( 1,-1),
+			Vector2i( 1, 1),
+			Vector2i(-1, 0),
+			Vector2i( 1, 0),
+			Vector2i( 0,-1),
+			Vector2i( 0, 1)
+		};
 		//collect all possible walk
 
 		for (int i = 0; i < 8; i++)
