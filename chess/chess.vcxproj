@@ -25,7 +25,6 @@
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h" />
     <ClInclude Include="Chess.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Player.h" />

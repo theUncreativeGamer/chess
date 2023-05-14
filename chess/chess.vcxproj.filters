@@ -29,9 +29,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="Chess.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
