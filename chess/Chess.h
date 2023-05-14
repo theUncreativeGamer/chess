@@ -30,7 +30,7 @@ public:
 	int getType() { return type; }
 	Vector2i getPos() { return position; }
 
-	// 不太確定這裡get的是「
+	// 這裡get的好像是「先移動的玩家顏色」而不是「這個棋子有沒有被動過」
 	bool getFirstMove() { return firstMove; }
 
 	/**********************************************************************************/
