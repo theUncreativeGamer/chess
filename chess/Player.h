@@ -20,6 +20,7 @@ public:
 					}
 				}
 				chess->setPos(p);
+				chess->hasMoved = true;
 				return true;
 			}
 		}

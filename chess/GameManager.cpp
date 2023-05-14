@@ -5,6 +5,11 @@
 #include<string>
 using namespace std;
 
+// 這個物件應該是用來管理en passent權限的
+// 每個pair中第一個值為剛一次走兩格的小兵的位置，第二個值則為這個位置的左邊或右邊。
+// 我不曉得原本寫這段code的人是有什麼人格障礙，不過事到如今我也懶得修了
+vector<pair<Vector2i, Vector2i>> thunder;
+
 int GameManager::showMenu() {
 	system("cls");
 	int choice = 0;
@@ -228,7 +233,7 @@ int GameManager::isOver()
 	}
 
 	bool couldWalk = false;
-	for (auto it : allChessWalk)
+	for (vector<Vector2i> it : allChessWalk)
 	{
 		if (it.size() != 0)
 		{
@@ -248,8 +253,236 @@ int GameManager::isOver()
 	}
 }
 
-void GameManager::setChess() {
+void GameManager::setChess(const string& inputText) {
 	
+	if (inputText == "")
+	{
+		OriginalSetChess();
+		return;
+	}
+
+	stringstream input(inputText);
+	input >> std::noskipws; // don't skip whitespace
+	char nextChar = '\0';
+
+	// 步驟1 將棋子放在對應的位置上
+	Vector2i nextPiecePosition(0, 0);
+	while (input >> nextChar)
+	{
+		// 進入下一個步驟
+		if (nextChar == ' ')
+		{
+			break;
+		}
+
+		// 切換到下一行
+		if (nextChar == '/')
+		{
+			nextPiecePosition.y += 1;
+			nextPiecePosition.x = 0;
+			continue;
+		}
+
+		// 保留空格
+		if (nextChar >= '1' && nextChar <= '8')
+		{
+			nextPiecePosition.x += (nextChar - '0');
+			continue;
+		}
+
+		// 格式錯誤
+		if (nextPiecePosition.x > 8 || nextPiecePosition.y > 8)
+		{
+			SetChessSyntaxError();
+			return;
+		}
+
+		// 生成棋子
+		switch (nextChar)
+		{
+		case 'P':
+			// 白色 小兵
+			chess.push_back(new Pawn(nextPiecePosition, 1));
+			break;
+		case 'R':
+			// 白色 城堡
+			chess.push_back(new Rook(nextPiecePosition, 1));
+			break;
+		case 'N':
+			// 白色 騎士
+			chess.push_back(new Knight(nextPiecePosition, 1));
+			break;
+		case 'B':
+			// 白色 主教
+			chess.push_back(new Bishop(nextPiecePosition, 1));
+			break;
+		case 'Q':
+			// 白色 皇后
+			chess.push_back(new Queen(nextPiecePosition, 1));
+			break;
+		case 'K':
+			// 白色 國王
+			chess.push_back(new King(nextPiecePosition, 1));
+			break;
+		case 'p':
+			// 黑色 小兵
+			chess.push_back(new Pawn(nextPiecePosition, 0));
+			break;
+		case 'r':
+			// 黑色 城堡
+			chess.push_back(new Rook(nextPiecePosition, 0));
+			break;
+		case 'n':
+			// 黑色 騎士
+			chess.push_back(new Knight(nextPiecePosition, 0));
+			break;
+		case 'b':
+			// 黑色 主教
+			chess.push_back(new Bishop(nextPiecePosition, 0));
+			break;
+		case 'q':
+			// 黑色 皇后
+			chess.push_back(new Queen(nextPiecePosition, 0));
+			break;
+		case 'k':
+			// 黑色 國王
+			chess.push_back(new King(nextPiecePosition, 0));
+			break;
+		default:
+			SetChessSyntaxError();
+			return;
+		}
+		/*
+		cout << "生成了一個" << chess.back()->getType() << "號在位置"
+			<< "(" << chess.back()->getPos().x << "," << chess.back()->getPos().y << ")\n";
+		*/
+		nextPiecePosition.x += 1;
+	}
+
+	// 步驟2 決定當前為哪一個玩家的回合
+	{
+		input >> nextChar;
+		switch (nextChar)
+		{
+		case 'b':
+			current_player = 0;
+			break;
+		case 'w':
+			current_player = 1;
+			break;
+		default:
+			SetChessSyntaxError();
+			return;
+		}
+		input.ignore();
+	}
+	
+
+	// 步驟3 決定入堡權限
+	{
+		Piece* wqr = GetChessPiece({ 0,0 }); // 白色 靠近皇后的 城堡
+		Piece* wkr = GetChessPiece({ 7,0 }); // 白色 靠近國王的 城堡
+		Piece* bqr = GetChessPiece({ 0,7 }); // 黑色 靠近皇后的 城堡
+		Piece* bkr = GetChessPiece({ 7,7 }); // 黑色 靠近國王的 城堡
+
+		// 若找到的棋子不是對應顏色的城堡則忽略
+		if (wqr != nullptr && (!(wqr->getType() == Type::rook) || !(wqr->getFirstMove() == 1)))
+			wqr = nullptr;
+		if (wkr != nullptr && (!(wkr->getType() == Type::rook) || !(wkr->getFirstMove() == 1)))
+			wkr = nullptr;
+		if (bqr != nullptr && (!(bqr->getType() == Type::rook) || !(bqr->getFirstMove() == 0)))
+			bqr = nullptr;
+		if (bkr != nullptr && (!(bkr->getType() == Type::rook) || !(bkr->getFirstMove() == 0)))
+			bkr = nullptr;
+
+		// 將找到的城堡設為「已經移動過」（即「無法入堡」）
+		if (wqr != nullptr) wqr->hasMoved = true;
+		if (wkr != nullptr) wkr->hasMoved = true;
+		if (bqr != nullptr) bqr->hasMoved = true;
+		if (bkr != nullptr) bkr->hasMoved = true;
+
+		// 把對應的城堡設為「可以」
+		for (bool endLoop = false; input >> nextChar;)
+		{
+			switch (nextChar)
+			{
+			case ' ':
+			case '-':
+				endLoop = true;
+				break;
+			case 'Q':
+				if (wqr != nullptr) wqr->hasMoved = false;
+				break;
+			case 'K':
+				if (wkr != nullptr) wkr->hasMoved = false;
+				break;
+			case 'q':
+				if (bqr != nullptr) bqr->hasMoved = false;
+				break;
+			case 'k':
+				if (bkr != nullptr) bkr->hasMoved = false;
+				break;
+			default:
+				SetChessSyntaxError();
+				return;
+			}
+			if (endLoop) break;
+		}
+
+		if (input.peek() == ' ')input.ignore();
+	}
+	
+	// 步驟4 決定En Passent權限
+	input >> nextChar;
+	if (!nextChar == '-')
+	{
+		char tempChar;
+		input >> tempChar;
+		if (nextChar < 'a' || nextChar>'h' || !(tempChar == '3' || tempChar == '6'))
+		{
+			SetChessSyntaxError();
+			return;
+		}
+		Vector2i enPassentPosition(nextChar - 'a', tempChar - '1');
+		if (enPassentPosition.y == 2) enPassentPosition.y += 1;
+		else enPassentPosition.y -= 1;
+		thunder.push_back(pair<Vector2i, Vector2i>(enPassentPosition, Vector2i(enPassentPosition.x + 1, enPassentPosition.y)));
+		thunder.push_back(pair<Vector2i, Vector2i>(enPassentPosition, Vector2i(enPassentPosition.x - 1, enPassentPosition.y)));
+	}
+
+	// 這裡本來應該還要載入「距離上次有意義之操作的回合數」作為判定平局的依據，可是原始碼好像沒做到這一塊，就先不做了。
+}
+
+int GameManager::findWhichChess(Vector2i p) {
+	for (int i = 0; i < chess.size(); i++) {
+		if (chess[i]->getFirstMove() == current_player && chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int GameManager::findWhichChess(Vector2i p, int a) {
+	for (int i = 0; i < chess.size(); i++) {
+		if (chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int GameManager::findOtherChess(Vector2i p)
+{
+	for (int i = 0; i < chess.size(); i++) {
+		if (chess[i]->getFirstMove() != current_player && chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+void GameManager::OriginalSetChess()
+{
 	chess.resize(32);
 
 	for (int i = 0; i < 8; i++) {	//加入白棋
@@ -328,35 +561,29 @@ void GameManager::setChess() {
 	chess[4] = new Bishop(pos{6,1},1);*/
 }
 
-int GameManager::findWhichChess(Vector2i p) {
-	for (int i = 0; i < chess.size(); i++) {
-		if (chess[i]->getFirstMove() == current_player && chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-int GameManager::findWhichChess(Vector2i p, int a) {
-	for (int i = 0; i < chess.size(); i++) {
-		if (chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-int GameManager::findOtherChess(Vector2i p)
+inline void GameManager::SetChessSyntaxError()
 {
-	for (int i = 0; i < chess.size(); i++) {
-		if (chess[i]->getFirstMove() != current_player && chess[i]->getPos().x == p.x && chess[i]->getPos().y == p.y) {
-			return i;
-		}
+	cout << "FEN代碼格式有誤。將使用預設值生成盤面。\n";
+	for (Piece* c : chess)
+	{
+		delete c;
 	}
-	return -1;
+	chess.clear();
+	OriginalSetChess();
+	return;
 }
 
-vector<pair<Vector2i, Vector2i>> thunder;
+inline Piece* GameManager::GetChessPiece(Vector2i position)
+{
+	for (Piece* p : chess)
+	{
+		if (p->getPos() == position)
+			return p;
+	}
+	return nullptr;
+}
+
+
 
 int GameManager::moveChess() {
 	Vector2i from, og, eaten;

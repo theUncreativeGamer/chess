@@ -36,6 +36,7 @@ int main() {
 					break;
 				}
 				else if (option == 2) {	//載入遊戲
+					
 					if (record.size() == 0) {
 						system("cls");
 						cout<<"目前無遊戲資料\n"
@@ -46,6 +47,21 @@ int main() {
 						continue;
 					}
 					current_game = showRecord(record, record_name) - 1;
+					
+					
+					
+				}
+				else if (option == 3)
+				{
+					cout << "請輸入FEN代碼\n";
+					string fen;
+					getline(cin, fen);
+					getline(cin, fen);
+					record.push_back(gm);
+					record_name.push_back(tmp);
+					current_game = record.size() - 1;
+					record[record.size() - 1].setChess(fen);
+
 					break;
 				}
 			}
@@ -139,7 +155,8 @@ int battleMenu() {
 	system("cls");
 	cout << "請問要進行新遊戲或是載入遊戲紀錄?\n"
 		<< "1: 新遊戲\n"
-		<< "2: 載入遊戲\n";
+		<< "2: 載入遊戲\n"
+		<< "3: 載入FEN代碼\n";
 
 	int option;
 	cin >> option;

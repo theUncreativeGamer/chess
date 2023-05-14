@@ -21,6 +21,9 @@ public:
 	Piece() { type = Type::none; position = { -1,-1 }; firstMove = false; }
 	Piece(Vector2i _pos, bool _firstmove) { position = _pos; firstMove = _firstmove; }
 
+	// 真正的「有沒有動過」
+	bool hasMoved = false;
+
 	//set
 	void setType(int _type) { type = _type; }
 	void setPos(Vector2i _pos) { position = _pos; }
@@ -30,7 +33,7 @@ public:
 	int getType() { return type; }
 	Vector2i getPos() { return position; }
 
-	// 這裡get的好像是「先移動的玩家顏色」而不是「這個棋子有沒有被動過」
+	// 這裡get的好像是「隊伍顏色」而不是「這個棋子有沒有被動過」
 	bool getFirstMove() { return firstMove; }
 
 	/**********************************************************************************/
@@ -66,7 +69,11 @@ public:
 private:
 	int type = Type::none;
 	Vector2i position;
+
+	// 這個值代表的真正意思好像是「隊伍顏色」
 	bool firstMove;
+
+	
 };
 
 class Bishop :public Piece
