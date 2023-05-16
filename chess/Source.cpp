@@ -4,7 +4,9 @@
 #include<string>
 using namespace std;
 int showRecord(vector<GameManager> record, vector<string> file_name);
+
 int battleMenu();
+
 int main() {
 	Vector2i from, to;
 	GameManager gm;
@@ -165,9 +167,9 @@ int battleMenu() {
 
 int whoFirst() {
 	system("cls");
-	cout << "Which move first ?\n"
-		<< "1: Black\n"
-		<< "2: White\n";
+	cout << "誰先走 ?\n"
+		<< "1: 黑方\n"
+		<< "2: 白方\n";
 	int option;
 	cin >> option;
 	return option;

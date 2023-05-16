@@ -3,7 +3,7 @@
 #include<iostream>
 #include<Windows.h>
 using namespace std;
-class Viewer {
+class ViewManager {
 public:
 	//顯示棋盤 包含將軍
 	void showBoard(const vector<Piece*>& chess, int current_player, int check);

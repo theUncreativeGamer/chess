@@ -1,7 +1,7 @@
 #pragma once
 #include"Chess.h"
 #include<ctime>
-#include"Viewer.h"
+#include"ViewManager.h"
 class Player {
 public:
 	// p為目標位置
@@ -55,5 +55,5 @@ public:
 		}
 	}
 private:
-	Viewer viewer;
+	ViewManager viewer;
 };

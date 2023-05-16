@@ -1,18 +1,18 @@
-#include"Viewer.h"
-void Viewer::SetColor(int color)
+#include"ViewManager.h"
+void ViewManager::SetColor(int color)
 {
 	HANDLE hConsole;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, color);
 }
 
-void Viewer::showBoard(const vector<Piece*>& chess, int current_player, int check) {
+void ViewManager::showBoard(const vector<Piece*>& chess, int current_player, int check) {
 	system("cls");
 	if (current_player == 1) {
-		cout << "white's turn\n";
+		cout << "白方回合\n";
 	}
 	else if (current_player == 0) {
-		cout << "black's turn\n";
+		cout << "黑方回合\n";
 	}
 	else {
 		cout << endl;
@@ -21,7 +21,7 @@ void Viewer::showBoard(const vector<Piece*>& chess, int current_player, int chec
 	if (check != 0) {
 		cout << "將軍!!\n";
 	}
-	cout << " \\x ０１２３４５６７\n";
+	cout << "\\ x ａｂｃｄｅｆｇｈ\n";
 	cout << "y   ----------------\n";
 
 	char board[8][8];
@@ -168,10 +168,10 @@ void Viewer::showBoard(const vector<Piece*>& chess, int current_player, int chec
 	SetColor(7);
 }
 
-void Viewer::showAllPath(vector<Piece*> chess, const vector<Vector2i>& posssible) {
+void ViewManager::showAllPath(vector<Piece*> chess, const vector<Vector2i>& posssible) {
 	system("cls");
-	cout << "possible path:\n" << "投降請輸入 surrender" << endl << "跳出此局遊戲請輸入 exit" << endl << endl;
-	cout << " \\x ０１２３４５６７\n";
+	cout << "可走的路徑:\n" << "投降請輸入 surrender" << endl << "跳出此局遊戲請輸入 exit" << endl << endl;
+	cout << "\\ x ａｂｃｄｅｆｇｈ\n";
 	cout << "y   ----------------\n";
 
 	char board[8][8];
@@ -355,10 +355,10 @@ void Viewer::showAllPath(vector<Piece*> chess, const vector<Vector2i>& posssible
 
 }
 
-void Viewer::showPromoteBoard(const vector<Piece*>& chess, int target) {
+void ViewManager::showPromoteBoard(const vector<Piece*>& chess, int target) {
 	system("cls");
-	cout << endl << "possible path:\n" << "投降請輸入 surrender" << endl << "跳出此局遊戲請輸入 exit" << endl << endl;
-	cout << " \\x ０１２３４５６７\n";
+	cout << endl << "可走的路徑:\n" << "投降請輸入 surrender" << endl << "跳出此局遊戲請輸入 exit" << endl << endl;
+	cout << "\\ x ａｂｃｄｅｆｇｆｈ\n";
 	cout << "y   ----------------\n";
 
 	char board[8][8];
@@ -493,27 +493,27 @@ void Viewer::showPromoteBoard(const vector<Piece*>& chess, int target) {
 		cout << endl;
 	}
 	SetColor(7);
-	cout << "What kind of chess you want to promote to be\n"
-		<< "1 for queen\n"
-		<< "2 for bishop\n"
-		<< "3 for rook\n"
-		<< "4 for knight\n";
+	cout << "選擇要升階成的棋子:\n"
+		<< "1: 皇后\n"
+		<< "2: 主教\n"
+		<< "3: 城堡\n"
+		<< "4: 騎士\n";
 }
 
-void Viewer::showBoard(const vector<Piece*>& chess, int current_player) {
+void ViewManager::showBoard(const vector<Piece*>& chess, int current_player) {
 	char tmp;
 	system("cls");
 	if (current_player == 1) {
-		cout << "white's turn\n";
+		cout << "白方回合\n";
 	}
 	else if (current_player == 0) {
-		cout << "black's turn\n";
+		cout << "黑方回合\n";
 	}
 	else {
 		cout << endl;
 	}
 	cout << "投降請輸入 surrender" << endl << "跳出此局遊戲請輸入 exit" << endl << endl;
-	cout << " \\x ０１２３４５６７\n";
+	cout << "\\ x ａｂｃｄｅｆｇｈ\n";
 	cout << "y   ----------------\n";
 
 	char board[8][8];

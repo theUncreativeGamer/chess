@@ -1,6 +1,6 @@
 #pragma once
 #include"Player.h"
-#include"Viewer.h"
+#include"ViewManager.h"
 #include"Chess.h"
 #include <vector>
 #include <string>
@@ -36,7 +36,7 @@ public:
 private:
 	Player* player[2];
 	int current_player;
-	Viewer viewer;
+	ViewManager viewer;
 	vector<Piece*> chess;
 	int check = 0;	//1 白被將軍 -1黑被將軍
 	vector<vector<Vector2i>> allChessWalk;

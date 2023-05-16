@@ -21,7 +21,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="Viewer.cpp">
+    <ClCompile Include="ViewManager.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="Vector2i.cpp">
@@ -38,7 +38,7 @@
     <ClInclude Include="Player.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Viewer.h">
+    <ClInclude Include="ViewManager.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="Vector2i.h">

@@ -583,8 +583,6 @@ inline Piece* GameManager::GetChessPiece(Vector2i position)
 	return nullptr;
 }
 
-
-
 int GameManager::moveChess() {
 	Vector2i from, og, eaten;
 	int target = -1, eaten_type, eat;
@@ -596,7 +594,7 @@ int GameManager::moveChess() {
 	bool flag = 0; //看有沒有選到下隻小兵
 
 
-	cout << "which chess you want to move (x,y)\n";
+	cout << "要移動哪個棋子 (x,y)\n";
 	while (cin >> option) {
 		if (option == "surrender") { //投降
 			return 1;
@@ -605,8 +603,8 @@ int GameManager::moveChess() {
 			return 2;
 		}
 		else if (!isNumber(option)) {
-			cout << "Invalid input\n"
-				<< "enter again!!\n";
+			cout << "輸入不合格\n"
+				<< "重新輸入!!\n";
 			cin >> option;
 		}
 		from.x = stoi(option);
@@ -614,8 +612,8 @@ int GameManager::moveChess() {
 		og.x = from.x;	og.y = from.y;	//for undo redo
 		target = findWhichChess(from);
 		if (target == -1) {
-			cout << "wrong position\n"
-				<< "enter again!!\n";
+			cout << "錯誤位置\n"
+				<< "重新輸入!!\n";
 		}
 		else {
 			//吃過路兵
@@ -668,7 +666,7 @@ int GameManager::moveChess() {
 
 	this->viewer.showAllPath(chess, possible);
 
-	cout << "Enter which position you want to the chess to (x,y)\n";
+	cout << "棋子要移動到哪 (x,y)\n";
 	Vector2i to;
 	while (cin >> to.x >> to.y) {
 		eaten.x = to.x;	eaten.y = to.y;
@@ -804,7 +802,7 @@ int GameManager::moveChess() {
 		}
 		else {
 			this->viewer.showAllPath(chess, possible);
-			cout << "Invalid input enter again!!\n";
+			cout << "又輸入無效!!\n";
 		}
 	}
 
