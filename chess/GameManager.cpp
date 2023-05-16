@@ -594,7 +594,7 @@ int GameManager::moveChess() {
 	bool flag = 0; //看有沒有選到下隻小兵
 
 
-	cout << "要移動哪個棋子 (x,y)\n";
+	cout << "要移動哪裡的棋子\n";
 	while (cin >> option) {
 		if (option == "surrender") { //投降
 			return 1;
@@ -602,13 +602,15 @@ int GameManager::moveChess() {
 		else if (option == "exit") { //跳出遊戲
 			return 2;
 		}
-		else if (!isNumber(option)) {
+		else if(option[0]<='h'&&option[0]>='a'&&option[1]>='0'&& option[1]<='7') {
+			from.x = option[0] - 'a';
+			from.y = option[1] - '0';
+		}
+		else {
 			cout << "輸入不合格\n"
 				<< "重新輸入!!\n";
 			cin >> option;
 		}
-		from.x = stoi(option);
-		cin >> from.y;
 		og.x = from.x;	og.y = from.y;	//for undo redo
 		target = findWhichChess(from);
 		if (target == -1) {
@@ -666,9 +668,11 @@ int GameManager::moveChess() {
 
 	this->viewer.showAllPath(chess, possible);
 
-	cout << "棋子要移動到哪 (x,y)\n";
+	cout << "棋子要移動到哪\n";
 	Vector2i to;
-	while (cin >> to.x >> to.y) {
+	string str;
+	while (cin >> str) {
+		to.x = str[0] - 'a'; to.y = str[1] - '0';
 		eaten.x = to.x;	eaten.y = to.y;
 		amount_before = chess.size();
 		eat = findWhichChess(to, 1);

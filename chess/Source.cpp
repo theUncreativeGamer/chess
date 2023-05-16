@@ -49,9 +49,6 @@ int main() {
 						continue;
 					}
 					current_game = showRecord(record, record_name) - 1;
-					
-					
-					
 				}
 				else if (option == 3)
 				{
@@ -63,7 +60,6 @@ int main() {
 					record_name.push_back(tmp);
 					current_game = record.size() - 1;
 					record[record.size() - 1].setChess(fen);
-
 					break;
 				}
 			}
