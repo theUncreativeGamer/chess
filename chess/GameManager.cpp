@@ -823,7 +823,7 @@ void GameManager::whichNeedPromote() {
 			viewer.showPromoteBoard(chess, i);
 			int type;
 			cin >> type;
-			player[current_player]->onPromote(chess, i, Type(type-1));
+			player[current_player]->onPromote(chess, i, Type(type+1));
 			return;
 		}
 	}
